@@ -50,7 +50,6 @@ const paintSeries = () => {
 
 // function to paint favourites list
 const paintFavourites = () => {
-  console.log("me van a pintar", favourites);
   let codeHTML = "";
   for (let i = 0; i < favourites.length; i++) {
     codeHTML += `<article class="favourite js-favourite" id=${favourites[i].id}>`;
@@ -67,6 +66,14 @@ const paintFavourites = () => {
   }
   const favContainer = document.querySelector(".js-favContainer");
   favContainer.innerHTML = codeHTML;
+
+  // dónde ponemos esta función?es así o con el local storage?
+  // for (let i = 0; i < seriesElements.length; i++) {
+  //   if (series[i].id === favourites[i].id) {
+  //     seriesElements[i].classList.remove("serieBackground");
+  //     seriesElements[i].classList.add("serieBackgroundSelected");
+  //   }
+  // }
 };
 
 // handler funtion for button Search
