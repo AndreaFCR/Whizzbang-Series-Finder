@@ -61,7 +61,8 @@ const paintFavourites = () => {
       codeHTML += `<img src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV" 
         class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
     }
-    codeHTML += `<h3 class="favourite__title">${favourites[i].name}</h3>`;
+    codeHTML += `<h3 class="favourite__title">${favourites[i].name} `;
+    codeHTML += `<button class="favourite__btn js-btnDelete"><i class="fa fa-window-close" aria-hidden="true"></i></<button></h3>`;
     codeHTML += `</article>`;
   }
   const favContainer = document.querySelector(".js-favContainer");
