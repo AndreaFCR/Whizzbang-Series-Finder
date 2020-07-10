@@ -24,6 +24,7 @@ const getDataFromApi = () => {
         series.push(data[i].show);
       }
       paintSeries();
+      listenSerieElement();
     });
 };
 
@@ -31,7 +32,7 @@ const getDataFromApi = () => {
 const paintSeries = () => {
   let codeHTML = "";
   for (let i = 0; i < series.length; i++) {
-    codeHTML += `<article class="serie">`;
+    codeHTML += `<article class="serie serieBackground js-serie" id=${series[i].id}>`;
     if (series[i].image !== null) {
       codeHTML += `<img src="${series[i].image.medium}" 
         class="serie__img" alt="Foto de la serie ${series[i].name}"/>`;
@@ -53,6 +54,18 @@ const handlerClickSearchButton = (ev) => {
   getDataFromApi();
 };
 
+const handlerClickSerieElement = (ev) => {
+  // console.log("me han clickado");
+  console.log(ev.currentTarget);
+};
+
 // listeners
 const searchBtn = document.querySelector(".js-searchBtn");
 searchBtn.addEventListener("click", handlerClickSearchButton);
+
+const listenSerieElement = () => {
+  const serieElement = document.querySelectorAll(".js-serie");
+  for (let i = 0; i < serieElement.length; i++) {
+    serieElement[i].addEventListener("click", handlerClickSerieElement);
+  }
+};

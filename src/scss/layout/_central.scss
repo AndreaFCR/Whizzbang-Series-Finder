@@ -11,8 +11,27 @@
     grid-row-start: 1;
   }
   &__container--search {
-    // border: 1px solid blueviolet;
     grid-row: 1 / 3;
+    display: flex;
+    flex-wrap: wrap;
+
+    .serie {
+      border-radius: 6px;
+      margin: 5px;
+      padding: 10px;
+
+      &__title {
+        text-align: center;
+      }
+    }
+
+    .serieBackground {
+      background-color: lightblue;
+    }
+
+    .serieBackgroundSelected {
+      background-color: lightseagreen;
+    }
   }
   &__container--fav {
     // border: 1px solid coral;
