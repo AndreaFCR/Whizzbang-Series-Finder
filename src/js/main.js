@@ -27,11 +27,12 @@ const getDataFromApi = () => {
     });
 };
 
-// function to paint data from array into html with or without image and function listen serieElements
+// function to paint data from array into html with or without image and function listen serieElements to listen elements painted
+
 const paintSeries = () => {
   let codeHTML = "";
   for (let i = 0; i < series.length; i++) {
-    codeHTML += `<article class="serie serieBackground js-serie" id=${series[i].id}>`;
+    codeHTML += `<article class="serie js-serie" id=${series[i].id}>`;
     if (series[i].image !== null) {
       codeHTML += `<img src="${series[i].image.medium}" 
         class="serie__img" alt="Foto de la serie ${series[i].name}"/>`;
@@ -61,44 +62,64 @@ const paintFavourites = () => {
         class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
     }
     codeHTML += `<h3 class="favourite__title">${favourites[i].name} `;
-    codeHTML += `<button class="favourite__btn js-btnDelete"><i class="fa fa-window-close" aria-hidden="true"></i></<button></h3>`;
+    codeHTML += `<button class="favourite__btn js-btnDelete" id=${favourites[i].id}><i class="fa fa-window-close" aria-hidden="true"></i></<button></h3>`;
     codeHTML += `</article>`;
   }
   const favContainer = document.querySelector(".js-favContainer");
   favContainer.innerHTML = codeHTML;
 
-  // dónde ponemos esta función?es así o con el local storage?
-  // for (let i = 0; i < seriesElements.length; i++) {
-  //   if (series[i].id === favourites[i].id) {
-  //     seriesElements[i].classList.remove("serieBackground");
-  //     seriesElements[i].classList.add("serieBackgroundSelected");
-  //   }
-  // }
+  listenResetBtn();
 };
 
-// handler funtion for button Search
+// get data from api when the button is clicked
 const handlerClickSearchButton = (ev) => {
   ev.preventDefault();
   getDataFromApi();
 };
 
-// handler fucntion for click series element
+// add serie to favourites when the button is clicked if it's not already inside, repaint favourites and add class element selected
 const handlerClickSeriesElements = (ev) => {
-  for (let i = 0; i < series.length; i++) {
-    if (parseInt(ev.currentTarget.id) === series[i].id) {
-      favourites.push(series[i]);
-    }
+  const elementClicked = ev.currentTarget;
+  const serieClickedId = parseInt(ev.currentTarget.id);
+  const serieSelected = series.find((serie) => serie.id === serieClickedId);
+  const serieFavourite = favourites.find(
+    (favourite) => favourite.id === serieClickedId
+  );
+
+  if (serieFavourite === undefined) {
+    favourites.push(serieSelected);
+    elementClicked.classList.add("serieBackgroundSelected"); //añado la clase cuando pinchamos pero no se como quitarlo cuando se borra, esto no está bien...
   }
   paintFavourites();
 };
 
-// listeners
+const handlerClickResetFavs = (ev) => {
+  const buttonClickedId = parseInt(ev.currentTarget.id);
+  const serieFavouriteIndex = favourites.findIndex(
+    (favourite) => favourite.id === buttonClickedId
+  );
+  favourites.splice(serieFavouriteIndex, 1);
+
+  paintFavourites();
+};
+
+// listen button search
 const searchBtn = document.querySelector(".js-searchBtn");
 searchBtn.addEventListener("click", handlerClickSearchButton);
 
+// listen click in series element
 const listenSeriesElements = () => {
   const seriesElements = document.querySelectorAll(".js-serie");
   for (let i = 0; i < seriesElements.length; i++) {
     seriesElements[i].addEventListener("click", handlerClickSeriesElements);
+  }
+};
+
+// listen button reset
+
+const listenResetBtn = () => {
+  const resetButtons = document.querySelectorAll(".js-btnDelete");
+  for (let resetButton of resetButtons) {
+    resetButton.addEventListener("click", handlerClickResetFavs);
   }
 };
