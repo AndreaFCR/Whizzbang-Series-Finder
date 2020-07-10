@@ -1,13 +1,11 @@
 .page__main {
-  //   border: 1px solid red;
   padding: 15px;
-  height: 100vh;
   display: grid;
   grid-template-columns: 30% 70%;
-  grid-template-rows: min-content;
+  grid-template-rows: 10% 90%;
+  grid-gap: 5px;
 
   &__form {
-    // border: 1px solid green;
     grid-row-start: 1;
   }
   &__container--search {
@@ -27,13 +25,28 @@
 
     .serieBackground {
       background-color: lightblue;
+      color: darkcyan;
     }
 
     .serieBackgroundSelected {
-      background-color: lightseagreen;
+      background-color: darkcyan;
+      color: white;
     }
   }
   &__container--fav {
-    // border: 1px solid coral;
+    grid-row: 2 / 3;
+
+    .favourite {
+      border: 1px solid lightblue;
+      border-radius: 6px;
+      color: darkcyan;
+      margin: 5px 0;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      &__title {
+        margin-left: 5px;
+      }
+    }
   }
 }

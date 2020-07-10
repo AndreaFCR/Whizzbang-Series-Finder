@@ -2,7 +2,7 @@
 
 // variables arrays
 let series = [];
-let favorites = [];
+let favourites = [];
 
 // create api URL from input value
 const textInput = document.querySelector(".js-input");
@@ -24,11 +24,10 @@ const getDataFromApi = () => {
         series.push(data[i].show);
       }
       paintSeries();
-      listenSerieElement();
     });
 };
 
-// function to paint data from array into html with or without image
+// function to paint data from array into html with or without image and function listen serieElements
 const paintSeries = () => {
   let codeHTML = "";
   for (let i = 0; i < series.length; i++) {
@@ -46,6 +45,27 @@ const paintSeries = () => {
 
   const seriesContainer = document.querySelector(".js-searchContainer");
   seriesContainer.innerHTML = codeHTML;
+  listenSeriesElements();
+};
+
+// function to paint favourites list
+const paintFavourites = () => {
+  console.log("me van a pintar", favourites);
+  let codeHTML = "";
+  for (let i = 0; i < favourites.length; i++) {
+    codeHTML += `<article class="favourite js-favourite" id=${favourites[i].id}>`;
+    if (favourites[i].image !== null) {
+      codeHTML += `<img src="${favourites[i].image.medium}" 
+        class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
+    } else {
+      codeHTML += `<img src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV" 
+        class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
+    }
+    codeHTML += `<h3 class="favourite__title">${favourites[i].name}</h3>`;
+    codeHTML += `</article>`;
+  }
+  const favContainer = document.querySelector(".js-favContainer");
+  favContainer.innerHTML = codeHTML;
 };
 
 // handler funtion for button Search
@@ -54,18 +74,23 @@ const handlerClickSearchButton = (ev) => {
   getDataFromApi();
 };
 
-const handlerClickSerieElement = (ev) => {
-  // console.log("me han clickado");
-  console.log(ev.currentTarget);
+// handler fucntion for click series element
+const handlerClickSeriesElements = (ev) => {
+  for (let i = 0; i < series.length; i++) {
+    if (parseInt(ev.currentTarget.id) === series[i].id) {
+      favourites.push(series[i]);
+    }
+  }
+  paintFavourites();
 };
 
 // listeners
 const searchBtn = document.querySelector(".js-searchBtn");
 searchBtn.addEventListener("click", handlerClickSearchButton);
 
-const listenSerieElement = () => {
-  const serieElement = document.querySelectorAll(".js-serie");
-  for (let i = 0; i < serieElement.length; i++) {
-    serieElement[i].addEventListener("click", handlerClickSerieElement);
+const listenSeriesElements = () => {
+  const seriesElements = document.querySelectorAll(".js-serie");
+  for (let i = 0; i < seriesElements.length; i++) {
+    seriesElements[i].addEventListener("click", handlerClickSeriesElements);
   }
 };
