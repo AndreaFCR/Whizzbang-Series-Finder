@@ -14,8 +14,8 @@
     flex-wrap: wrap;
 
     .serie {
-      background-color: lightblue;
-      color: darkcyan;
+      // background-color: lightblue;
+      // color: darkcyan;
       border-radius: 6px;
       margin: 5px;
       padding: 10px;
@@ -25,10 +25,10 @@
       }
     }
 
-    // .serieBackground {
-    //   background-color: lightblue;
-    //   color: darkcyan;
-    // }
+    .serieBackground {
+      background-color: lightblue;
+      color: darkcyan;
+    }
 
     .serieBackgroundSelected {
       background-color: darkcyan;
@@ -51,6 +51,7 @@
       }
       &__btn {
         color: darkcyan;
+        // position: absolute;
       }
     }
   }

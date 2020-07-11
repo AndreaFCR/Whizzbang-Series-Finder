@@ -8,31 +8,35 @@ let favourites = [];
 const textInput = document.querySelector(".js-input");
 const createApiUrl = () => {
   const inputValue = textInput.value;
-  const magicWord = inputValue.split(" ").join("+"); //no se puede usar trim(), necesitamos +
-  const apiUrl = `http://api.tvmaze.com/search/shows?q=${magicWord}`;
+  const apiUrl = `http://api.tvmaze.com/search/shows?q=${inputValue}`;
   return apiUrl;
 };
 
-// obtain data from api, reset array series and paint in HTML
+// obtain data from api, reset series array and keep it in series array and paint in html.
 const getDataFromApi = () => {
-  createApiUrl();
   fetch(createApiUrl())
     .then((response) => response.json())
     .then((data) => {
       series = [];
-      for (let i = 0; i < data.length; i++) {
-        series.push(data[i].show);
-      }
+      const addSeriesResult = (item) => series.push(item.show);
+      data.map(addSeriesResult);
       paintSeries();
+      paintFavourites();
     });
 };
 
-// function to paint data from array into html with or without image and function listen serieElements to listen elements painted
+// get data from api when the button is clicked and paint html
+const handlerClickSearchButton = (ev) => {
+  ev.preventDefault();
+  getDataFromApi();
+};
+
+// paint data from array into html with or without image and listen seriesElements painted
 
 const paintSeries = () => {
   let codeHTML = "";
   for (let i = 0; i < series.length; i++) {
-    codeHTML += `<article class="serie js-serie" id=${series[i].id}>`;
+    codeHTML += `<article class="serie serieBackground js-serie " id=${series[i].id}>`;
     if (series[i].image !== null) {
       codeHTML += `<img src="${series[i].image.medium}" 
         class="serie__img" alt="Foto de la serie ${series[i].name}"/>`;
@@ -46,7 +50,25 @@ const paintSeries = () => {
 
   const seriesContainer = document.querySelector(".js-searchContainer");
   seriesContainer.innerHTML = codeHTML;
+  addbackground();
   listenSeriesElements();
+  listenResetBtn();
+};
+
+// add classes to articles if they are favourites or not
+const addbackground = () => {
+  for (let i = 0; i < series.length; i++) {
+    const getElement = document.getElementById(`${series[i].id}`);
+
+    if (favourites[i] !== undefined) {
+      if (series[i].id === favourites[i].id) {
+        getElement.classList.remove("serieBackground");
+        getElement.classList.add("serieBackgroundSelected");
+      }
+    }
+
+    // Nota: funciona solamente si eliminas desde el último al primero. creo que hay un error con los i... no es el mismo elemento [i] en series que en favourites. tengo que hacerlo con identificadores... o buscar una serie concreta en favoritos...pero cómo??
+  }
 };
 
 // function to paint favourites list
@@ -61,25 +83,19 @@ const paintFavourites = () => {
       codeHTML += `<img src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV" 
         class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
     }
-    codeHTML += `<h3 class="favourite__title">${favourites[i].name} `;
-    codeHTML += `<button class="favourite__btn js-btnDelete" id=${favourites[i].id}><i class="fa fa-window-close" aria-hidden="true"></i></<button></h3>`;
+    codeHTML += `<h3 class="favourite__title">${favourites[i].name}</h3>`;
+    codeHTML += `<button class="favourite__btn js-btnDelete" id=${favourites[i].id}><i class="fa fa-window-close" aria-hidden="true"></i></<button>`;
     codeHTML += `</article>`;
   }
   const favContainer = document.querySelector(".js-favContainer");
   favContainer.innerHTML = codeHTML;
 
   listenResetBtn();
-};
-
-// get data from api when the button is clicked
-const handlerClickSearchButton = (ev) => {
-  ev.preventDefault();
-  getDataFromApi();
+  listenSeriesElements();
 };
 
 // add serie to favourites when the button is clicked if it's not already inside, repaint favourites and add class element selected
 const handlerClickSeriesElements = (ev) => {
-  const elementClicked = ev.currentTarget;
   const serieClickedId = parseInt(ev.currentTarget.id);
   const serieSelected = series.find((serie) => serie.id === serieClickedId);
   const serieFavourite = favourites.find(
@@ -88,19 +104,10 @@ const handlerClickSeriesElements = (ev) => {
 
   if (serieFavourite === undefined) {
     favourites.push(serieSelected);
-    elementClicked.classList.add("serieBackgroundSelected"); //añado la clase cuando pinchamos pero no se como quitarlo cuando se borra, esto no está bien...
   }
+  updateLocalStorage();
   paintFavourites();
-};
-
-const handlerClickResetFavs = (ev) => {
-  const buttonClickedId = parseInt(ev.currentTarget.id);
-  const serieFavouriteIndex = favourites.findIndex(
-    (favourite) => favourite.id === buttonClickedId
-  );
-  favourites.splice(serieFavouriteIndex, 1);
-
-  paintFavourites();
+  paintSeries();
 };
 
 // listen button search
@@ -115,6 +122,22 @@ const listenSeriesElements = () => {
   }
 };
 
+//RESET ITEM OF FAVOURITES
+
+//handler button reset
+
+const handlerClickResetFavs = (ev) => {
+  const buttonClickedId = parseInt(ev.currentTarget.id);
+  const serieFavouriteIndex = favourites.findIndex(
+    (favourite) => favourite.id === buttonClickedId
+  );
+  favourites.splice(serieFavouriteIndex, 1);
+
+  updateLocalStorage();
+  paintFavourites();
+  paintSeries();
+};
+
 // listen button reset
 
 const listenResetBtn = () => {
@@ -123,3 +146,18 @@ const listenResetBtn = () => {
     resetButton.addEventListener("click", handlerClickResetFavs);
   }
 };
+
+// función para guardar en el local storage
+const updateLocalStorage = () => {
+  localStorage.setItem("favourites", JSON.stringify(favourites));
+};
+
+const getFromLocalStorage = () => {
+  const localData = JSON.parse(localStorage.getItem("favourites"));
+  if (localData !== null) {
+    favourites = localData;
+  }
+};
+
+getFromLocalStorage();
+paintFavourites();
