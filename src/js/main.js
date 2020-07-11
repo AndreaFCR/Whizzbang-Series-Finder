@@ -52,7 +52,6 @@ const paintSeries = () => {
   seriesContainer.innerHTML = codeHTML;
   addbackground();
   listenSeriesElements();
-  listenResetBtn();
 };
 
 // add classes to articles if they are favourites or not
@@ -91,7 +90,6 @@ const paintFavourites = () => {
   favContainer.innerHTML = codeHTML;
 
   listenResetBtn();
-  listenSeriesElements();
 };
 
 // add serie to favourites when the button is clicked if it's not already inside, repaint favourites and add class element selected
