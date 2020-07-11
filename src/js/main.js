@@ -29,12 +29,15 @@ const getDataFromApi = () => {
 const handlerClickSearchButton = (ev) => {
   ev.preventDefault();
   getDataFromApi();
+  paintSeries();
+  paintFavourites();
 };
 
 // paint data from array into html with or without image and listen seriesElements painted
 
 const paintSeries = () => {
   let codeHTML = "";
+  let titleHTML = `<h2>Resultados de la búsqueda:</h2>`;
   for (let i = 0; i < series.length; i++) {
     codeHTML += `<article class="serie serieBackground js-serie " id=${series[i].id}>`;
     if (series[i].image !== null) {
@@ -49,7 +52,10 @@ const paintSeries = () => {
   }
 
   const seriesContainer = document.querySelector(".js-searchContainer");
+  const searchTitleContainer = document.querySelector(".js-searchTitle");
+
   seriesContainer.innerHTML = codeHTML;
+  searchTitleContainer.innerHTML = titleHTML;
   addbackground();
   listenSeriesElements();
 };
@@ -68,11 +74,14 @@ const addbackground = () => {
 
     // Nota: funciona solamente si eliminas desde el último al primero. creo que hay un error con los i... no es el mismo elemento [i] en series que en favourites. tengo que hacerlo con identificadores... o buscar una serie concreta en favoritos...pero cómo??
   }
+  listenResetBtn();
+  listenSeriesElements();
 };
 
 // function to paint favourites list
 const paintFavourites = () => {
   let codeHTML = "";
+  codeHTML += `<h2 class="favourite__title">Series favoritas</h2>`;
   for (let i = 0; i < favourites.length; i++) {
     codeHTML += `<article class="favourite js-favourite" id=${favourites[i].id}>`;
     if (favourites[i].image !== null) {
@@ -83,13 +92,15 @@ const paintFavourites = () => {
         class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
     }
     codeHTML += `<h3 class="favourite__title">${favourites[i].name}</h3>`;
-    codeHTML += `<button class="favourite__btn js-btnDelete" id=${favourites[i].id}><i class="fa fa-window-close" aria-hidden="true"></i></<button>`;
+    codeHTML += `<div class="favourite__btn js-btnDelete" id=${favourites[i].id}><i class="fa fa-window-close" aria-hidden="true"></i></<div>`;
     codeHTML += `</article>`;
   }
+
   const favContainer = document.querySelector(".js-favContainer");
   favContainer.innerHTML = codeHTML;
 
   listenResetBtn();
+  listenSeriesElements();
 };
 
 // add serie to favourites when the button is clicked if it's not already inside, repaint favourites and add class element selected

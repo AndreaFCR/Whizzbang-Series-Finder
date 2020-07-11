@@ -1,3 +1,17 @@
 .page__header {
-  text-align: center;
+  background-color: $color-primary-dark;
+  border: 1px solid $color-primary-dark;
+  color: $color-primary-light;
+  display: flex;
+  justify-content: center;
+  height: 90px;
+  padding: 10px;
+
+  img {
+    width: 125px;
+  }
+
+  h1 {
+    margin-left: 20px;
+  }
 }
