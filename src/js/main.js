@@ -31,6 +31,7 @@ const searchSeries = (ev) => {
   ev.preventDefault();
   paintSeries();
   paintFavourites();
+  addBackgroundSearch();
 };
 
 // paint data from array into html with or without image and listen seriesElements painted
@@ -105,11 +106,25 @@ const saveFavourites = (ev) => {
 
   updateLocalStorage();
   paintFavourites();
-  addBackgroundSelected(ev);
+  addBackgroundFavourite(ev);
 };
 
 // add background color for favourite series
-const addBackgroundSelected = (ev) => {
+
+const addBackgroundSearch = () => {
+  for (const serie of series) {
+    for (const item of favourites) {
+      let getElement = document.getElementById(serie.id);
+      let favouriteId = item.id;
+      if (serie.id === favouriteId) {
+        getElement.classList.add("serieBackgroundSelected");
+        getElement.classList.remove("serieBackground");
+      }
+    }
+  }
+};
+
+const addBackgroundFavourite = (ev) => {
   const getElement = document.getElementById(ev.currentTarget.id);
   getElement.classList.add("serieBackgroundSelected");
   getElement.classList.remove("serieBackground");
