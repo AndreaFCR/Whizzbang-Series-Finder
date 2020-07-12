@@ -20,15 +20,15 @@ const getDataFromApi = () => {
       series = [];
       const addSeriesResult = (item) => series.push(item.show);
       data.map(addSeriesResult);
-      paintSeries();
-      paintFavourites();
     });
 };
 
+//obtain value from input and serch for series before painting
+textInput.addEventListener("keyup", getDataFromApi);
+
 // get data from api when the button is clicked and paint html
-const handlerClickSearchButton = (ev) => {
+const searchSeries = (ev) => {
   ev.preventDefault();
-  getDataFromApi();
   paintSeries();
   paintFavourites();
 };
@@ -55,33 +55,20 @@ const paintSeries = () => {
   const searchTitleContainer = document.querySelector(".js-searchTitle");
 
   seriesContainer.innerHTML = codeHTML;
-  searchTitleContainer.innerHTML = titleHTML;
-  addbackground();
-  listenSeriesElements();
-};
-
-// add classes to articles if they are favourites or not
-const addbackground = () => {
-  for (let i = 0; i < series.length; i++) {
-    const getElement = document.getElementById(`${series[i].id}`);
-
-    if (favourites[i] !== undefined) {
-      if (series[i].id === favourites[i].id) {
-        getElement.classList.remove("serieBackground");
-        getElement.classList.add("serieBackgroundSelected");
-      }
-    }
-
-    // Nota: funciona solamente si eliminas desde el último al primero. creo que hay un error con los i... no es el mismo elemento [i] en series que en favourites. tengo que hacerlo con identificadores... o buscar una serie concreta en favoritos...pero cómo??
+  if (series.length !== 0) {
+    searchTitleContainer.innerHTML = titleHTML;
   }
-  listenResetBtn();
+
   listenSeriesElements();
 };
 
 // function to paint favourites list
 const paintFavourites = () => {
   let codeHTML = "";
-  codeHTML += `<h2 class="favourite__title">Series favoritas</h2>`;
+  if (favourites.length !== 0) {
+    codeHTML += `<h2 class="favourite__title">Series favoritas</h2>`;
+  }
+
   for (let i = 0; i < favourites.length; i++) {
     codeHTML += `<article class="favourite js-favourite" id=${favourites[i].id}>`;
     if (favourites[i].image !== null) {
@@ -104,8 +91,9 @@ const paintFavourites = () => {
 };
 
 // add serie to favourites when the button is clicked if it's not already inside, repaint favourites and add class element selected
-const handlerClickSeriesElements = (ev) => {
+const saveFavourites = (ev) => {
   const serieClickedId = parseInt(ev.currentTarget.id);
+
   const serieSelected = series.find((serie) => serie.id === serieClickedId);
   const serieFavourite = favourites.find(
     (favourite) => favourite.id === serieClickedId
@@ -114,20 +102,34 @@ const handlerClickSeriesElements = (ev) => {
   if (serieFavourite === undefined) {
     favourites.push(serieSelected);
   }
+
   updateLocalStorage();
   paintFavourites();
-  paintSeries();
+  addBackgroundSelected(ev);
+};
+
+// add background color for favourite series
+const addBackgroundSelected = (ev) => {
+  const getElement = document.getElementById(ev.currentTarget.id);
+  getElement.classList.add("serieBackgroundSelected");
+  getElement.classList.remove("serieBackground");
+};
+
+const addBackgroundNormal = (ev) => {
+  const getElement = document.getElementById(ev.currentTarget.id);
+  getElement.classList.add("serieBackground");
+  getElement.classList.remove("serieBackgroundSelected");
 };
 
 // listen button search
 const searchBtn = document.querySelector(".js-searchBtn");
-searchBtn.addEventListener("click", handlerClickSearchButton);
+searchBtn.addEventListener("click", searchSeries);
 
 // listen click in series element
 const listenSeriesElements = () => {
   const seriesElements = document.querySelectorAll(".js-serie");
   for (let i = 0; i < seriesElements.length; i++) {
-    seriesElements[i].addEventListener("click", handlerClickSeriesElements);
+    seriesElements[i].addEventListener("click", saveFavourites);
   }
 };
 
@@ -135,7 +137,7 @@ const listenSeriesElements = () => {
 
 //handler button reset
 
-const handlerClickResetFavs = (ev) => {
+const resetFavourites = (ev) => {
   const buttonClickedId = parseInt(ev.currentTarget.id);
   const serieFavouriteIndex = favourites.findIndex(
     (favourite) => favourite.id === buttonClickedId
@@ -144,7 +146,7 @@ const handlerClickResetFavs = (ev) => {
 
   updateLocalStorage();
   paintFavourites();
-  paintSeries();
+  addBackgroundNormal(ev);
 };
 
 // listen button reset
@@ -152,7 +154,7 @@ const handlerClickResetFavs = (ev) => {
 const listenResetBtn = () => {
   const resetButtons = document.querySelectorAll(".js-btnDelete");
   for (let resetButton of resetButtons) {
-    resetButton.addEventListener("click", handlerClickResetFavs);
+    resetButton.addEventListener("click", resetFavourites);
   }
 };
 
