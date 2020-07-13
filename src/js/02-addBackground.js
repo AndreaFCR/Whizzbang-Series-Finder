@@ -9,7 +9,6 @@ const addBackgroundSearch = () => {
       let favouriteId = item.id;
       if (serie.id === favouriteId) {
         getElement.classList.add("serieBackgroundSelected");
-        getElement.classList.remove("serieBackground");
       }
     }
   }
@@ -19,13 +18,12 @@ const addBackgroundSearch = () => {
 const addBackgroundFavourite = (ev) => {
   const getElement = document.getElementById(ev.currentTarget.id);
   getElement.classList.add("serieBackgroundSelected");
-  getElement.classList.remove("serieBackground");
 };
 
 // add background color for favourite series when reset button is clicked
 const addBackgroundNormal = (ev) => {
   const getElement = document.getElementById(ev.currentTarget.id);
-  getElement.classList.add("serieBackground");
+
   getElement.classList.remove("serieBackgroundSelected");
 };
 
@@ -34,6 +32,5 @@ const addBackgroundResetAll = () => {
   for (const serie of series) {
     let getElement = document.getElementById(serie.id);
     getElement.classList.remove("serieBackgroundSelected");
-    getElement.classList.add("serieBackground");
   }
 };

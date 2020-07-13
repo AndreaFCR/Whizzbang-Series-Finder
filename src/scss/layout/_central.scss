@@ -30,15 +30,12 @@
       border-radius: 6px;
       margin: 5px;
       padding: 10px;
+      background-color: $color-primary-medium-light;
+      color: $color-primary-dark;
 
       &__title {
         text-align: center;
       }
-    }
-
-    .serieBackground {
-      background-color: $color-primary-medium-light;
-      color: $color-primary-dark;
     }
 
     .serieBackgroundSelected {
