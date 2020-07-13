@@ -54,6 +54,7 @@ const paintFavourites = () => {
   const favContainer = document.querySelector(".js-favContainer");
   favContainer.innerHTML = codeHTML;
 
+  addBackgroundSearch();
   listenResetBtn();
   listenResetAllBtn();
   listenSeriesElements();

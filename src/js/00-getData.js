@@ -31,7 +31,6 @@ const searchSeries = (ev) => {
   ev.preventDefault();
   paintSeries();
   paintFavourites();
-  addBackgroundSearch();
 };
 
 // listen button search
