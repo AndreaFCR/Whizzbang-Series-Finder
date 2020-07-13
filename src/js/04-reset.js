@@ -1,3 +1,5 @@
+"use strict";
+
 //reset favourites when button reset is clicked in every card
 
 const resetFavourites = (ev) => {

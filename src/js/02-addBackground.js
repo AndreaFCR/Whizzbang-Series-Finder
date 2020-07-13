@@ -23,7 +23,6 @@ const addBackgroundFavourite = (ev) => {
 // add background color for favourite series when reset button is clicked
 const addBackgroundNormal = (ev) => {
   const getElement = document.getElementById(ev.currentTarget.id);
-
   getElement.classList.remove("serieBackgroundSelected");
 };
 
