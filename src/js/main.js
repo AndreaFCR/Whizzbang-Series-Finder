@@ -67,7 +67,8 @@ const paintSeries = () => {
 const paintFavourites = () => {
   let codeHTML = "";
   if (favourites.length !== 0) {
-    codeHTML += `<h2 class="favourite__title">Series favoritas</h2>`;
+    codeHTML += `<h2 class="title">Series favoritas `;
+    codeHTML += `<span class="btnAll js-btnDeleteAll"}><i class="fa fa-window-close" aria-hidden="true"></i></<span></h2>`;
   }
 
   for (let i = 0; i < favourites.length; i++) {
@@ -88,6 +89,7 @@ const paintFavourites = () => {
   favContainer.innerHTML = codeHTML;
 
   listenResetBtn();
+  listenResetAllBtn();
   listenSeriesElements();
 };
 
@@ -136,6 +138,14 @@ const addBackgroundNormal = (ev) => {
   getElement.classList.remove("serieBackgroundSelected");
 };
 
+const addBackgroundResetAll = () => {
+  for (const serie of series) {
+    let getElement = document.getElementById(serie.id);
+    getElement.classList.remove("serieBackgroundSelected");
+    getElement.classList.add("serieBackground");
+  }
+};
+
 // listen button search
 const searchBtn = document.querySelector(".js-searchBtn");
 searchBtn.addEventListener("click", searchSeries);
@@ -164,12 +174,27 @@ const resetFavourites = (ev) => {
   addBackgroundNormal(ev);
 };
 
+const resetAllFavourites = () => {
+  favourites.splice(0, favourites.length);
+
+  updateLocalStorage();
+  paintFavourites();
+  addBackgroundResetAll();
+};
+
 // listen button reset
 
 const listenResetBtn = () => {
   const resetButtons = document.querySelectorAll(".js-btnDelete");
   for (let resetButton of resetButtons) {
     resetButton.addEventListener("click", resetFavourites);
+  }
+};
+
+const listenResetAllBtn = () => {
+  const resetAllBtn = document.querySelector(".js-btnDeleteAll");
+  if (resetAllBtn !== null) {
+    resetAllBtn.addEventListener("click", resetAllFavourites);
   }
 };
 

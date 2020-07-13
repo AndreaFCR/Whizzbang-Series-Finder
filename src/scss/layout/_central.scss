@@ -50,6 +50,12 @@
     grid-column-start: 1;
     grid-row: 2 / 3;
 
+    .title {
+      color: $color-primary-dark;
+      margin-left: 5px;
+      text-align: center;
+    }
+
     .favourite {
       border: 2px solid $color-primary-dark;
       border-radius: 6px;
@@ -58,10 +64,6 @@
       padding: 5px;
       display: flex;
       align-items: center;
-
-      &__title {
-        color: $color-primary-dark;
-      }
 
       &__img {
         border-radius: 15px;
