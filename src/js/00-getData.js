@@ -1,5 +1,7 @@
 "use strict";
 
+// añadir notas en español de lo que hace el código
+
 // variables arrays
 let series = [];
 let favourites = [];
