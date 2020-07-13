@@ -1,5 +1,3 @@
-"use strict";
-
 // función para guardar en el local storage
 const updateLocalStorage = () => {
   localStorage.setItem("favourites", JSON.stringify(favourites));

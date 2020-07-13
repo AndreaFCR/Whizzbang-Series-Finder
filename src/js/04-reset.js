@@ -1,5 +1,4 @@
-"use strict";
-//handler button reset
+//reset favourites when button reset is clicked in every card
 
 const resetFavourites = (ev) => {
   const buttonClickedId = parseInt(ev.currentTarget.id);
@@ -12,6 +11,8 @@ const resetFavourites = (ev) => {
   paintFavourites();
   addBackgroundNormal(ev);
 };
+
+//reset all favourite when the button reset all is clicked
 
 const resetAllFavourites = () => {
   favourites.splice(0, favourites.length);
@@ -29,6 +30,8 @@ const listenResetBtn = () => {
     resetButton.addEventListener("click", resetFavourites);
   }
 };
+
+// listen button reset all
 
 const listenResetAllBtn = () => {
   const resetAllBtn = document.querySelector(".js-btnDeleteAll");

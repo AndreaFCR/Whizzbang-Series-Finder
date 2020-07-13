@@ -1,6 +1,6 @@
 "use strict";
 
-// add background color for favourite series
+// add background color for favourite series when the button search is clicked
 
 const addBackgroundSearch = () => {
   for (const serie of series) {
@@ -15,18 +15,21 @@ const addBackgroundSearch = () => {
   }
 };
 
+// add background color for favourite series when serie element is clicked
 const addBackgroundFavourite = (ev) => {
   const getElement = document.getElementById(ev.currentTarget.id);
   getElement.classList.add("serieBackgroundSelected");
   getElement.classList.remove("serieBackground");
 };
 
+// add background color for favourite series when reset button is clicked
 const addBackgroundNormal = (ev) => {
   const getElement = document.getElementById(ev.currentTarget.id);
   getElement.classList.add("serieBackground");
   getElement.classList.remove("serieBackgroundSelected");
 };
 
+// add background color for favourite series when reset button all is clicked
 const addBackgroundResetAll = () => {
   for (const serie of series) {
     let getElement = document.getElementById(serie.id);
