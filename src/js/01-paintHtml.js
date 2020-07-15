@@ -24,6 +24,7 @@ const paintSeries = () => {
   if (series.length !== 0) {
     searchTitleContainer.innerHTML = titleHTML;
   }
+
   addBackgroundSearch();
   listenSeriesElements();
 };
