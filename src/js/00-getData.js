@@ -1,7 +1,5 @@
 "use strict";
 
-// añadir notas en español de lo que hace el código
-
 // variables arrays
 let series = [];
 let favourites = [];
@@ -19,7 +17,8 @@ const getDataFromApi = () => {
   fetch(createApiUrl())
     .then((response) => response.json())
     .then((data) => {
-      series = [];
+      series = []; //reseteo el array para que no me añada las busquedas nuevas
+      //funciones que añaden cada item de data al array series
       const addSeriesResult = (item) => series.push(item.show);
       data.map(addSeriesResult);
     });

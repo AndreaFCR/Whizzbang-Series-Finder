@@ -7,13 +7,12 @@ const paintSeries = () => {
   let titleHTML = `<h2>Resultados de la búsqueda:</h2>`;
   for (let i = 0; i < series.length; i++) {
     codeHTML += `<article class="serie serieBackground js-serie " id=${series[i].id}>`;
-    if (series[i].image !== null) {
-      codeHTML += `<img src="${series[i].image.medium}" 
+    let imgUrl =
+      series[i].image !== null
+        ? series[i].image.medium
+        : "https://via.placeholder.com/210x295/ffffff/666666/?text=TV";
+    codeHTML += `<img src="${imgUrl}" 
           class="serie__img" alt="Foto de la serie ${series[i].name}"/>`;
-    } else {
-      codeHTML += `<img src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV" 
-          class="serie__img" alt="Foto de la serie ${series[i].name}"/>`;
-    }
     codeHTML += `<h3 class="serie__title">${series[i].name}</h3>`;
     codeHTML += `</article>`;
   }
@@ -25,7 +24,7 @@ const paintSeries = () => {
   if (series.length !== 0) {
     searchTitleContainer.innerHTML = titleHTML;
   }
-
+  addBackgroundSearch();
   listenSeriesElements();
 };
 
@@ -39,13 +38,12 @@ const paintFavourites = () => {
 
   for (let i = 0; i < favourites.length; i++) {
     codeHTML += `<article class="favourite js-favourite" id=${favourites[i].id}>`;
-    if (favourites[i].image !== null) {
-      codeHTML += `<img src="${favourites[i].image.medium}" 
-          class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
-    } else {
-      codeHTML += `<img src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV" 
-          class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
-    }
+    let imgUrl =
+      favourites[i].image !== null
+        ? favourites[i].image.medium
+        : "https://via.placeholder.com/210x295/ffffff/666666/?text=TV";
+
+    codeHTML += `<img src="${imgUrl}" class="favourite__img" alt="Foto de la serie ${favourites[i].name}"/>`;
     codeHTML += `<h3 class="favourite__title">${favourites[i].name}</h3>`;
     codeHTML += `<div class="favourite__btn js-btnDelete" id=${favourites[i].id}><i class="fa fa-window-close" aria-hidden="true"></i></<div>`;
     codeHTML += `</article>`;
@@ -54,8 +52,6 @@ const paintFavourites = () => {
   const favContainer = document.querySelector(".js-favContainer");
   favContainer.innerHTML = codeHTML;
 
-  addBackgroundSearch();
   listenResetBtn();
   listenResetAllBtn();
-  listenSeriesElements();
 };

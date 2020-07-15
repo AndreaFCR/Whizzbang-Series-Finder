@@ -2,9 +2,9 @@
 
 // add serie to favourites when the button is clicked if it's not already inside. If you clicked again delete it from favourites
 const saveFavourites = (ev) => {
-  const serieClickedId = parseInt(ev.currentTarget.id);
+  const serieClickedId = parseInt(ev.currentTarget.id); //id del elemento, en este caso del article
 
-  const serieSelected = series.find((serie) => serie.id === serieClickedId);
+  const serieSelected = series.find((serie) => serie.id === serieClickedId); //serie que coincida con el id del article
   const serieFavourite = favourites.find(
     (favourite) => favourite.id === serieClickedId
   );
