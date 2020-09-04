@@ -19,17 +19,17 @@ Task for final evaluation of module 2.  Task's aim is to develop a webpage to se
 #### Installation
 
 ````
-nmp install
+npm install
 ````
 #### Run the project
 
 ````
-nmp start
+npm start
 ````
-#### Public the project
+#### Deployment
 
 ````
-nmp run docs
+npm run docs
 ````
 
 
